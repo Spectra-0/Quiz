@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Узнай свой стиль мышления</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.5;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header-image {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+        }
+        .lead {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        .quote {
+            font-style: italic;
+            padding: 15px;
+            background-color: #f0f4ff;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #444;
+        }
+        .btn {
+            display: block;
+            background-color: #4a6bff;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 30px auto;
+            max-width: 300px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #3a5aef;
+        }
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+        .question {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: none;
+        }
+        .question.active {
+            display: block;
+        }
+        .question-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .option {
+            display: block;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option:hover {
+            border-color: #4a6bff;
+            background-color: #f8faff;
+        }
+        .option input {
+            margin-right: 10px;
+        }
+        small {
+            display: block;
+            font-size: 13px;
+            color: #777;
+            margin-top: 5px;
+            margin-left: 25px;
+        }
+        .result-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: none;
+        }
+        .result-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+        }
+        .result-image {
+            width: 100%;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .counter {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin: 20px 0;
+        }
+        .emoji {
+            font-size: 20px;
+            margin-right: 5px;
+        }
+        .progress-bar {
+            height: 6px;
+            background-color: #eee;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress {
+            height: 100%;
+            background-color: #4a6bff;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Главный экран -->
+        <div class="header" id="start-screen">
+            <!-- Изображение для главного экрана -->
+            <img src="[ЗАМЕНИТЬ_НА_ССЫЛКУ_ИЗОБРАЖЕНИЯ]" alt="Стиль мышления" class="header-image">
+            <h1>Узнай свой стиль мышления — и выбери путь, который реально работает для тебя!</h1>
+            <p class="lead">Сегодня мир меняется быстрее, чем ты успеваешь свайпнуть сторис. Чтобы не утонуть в потоке информации и реально двигаться вперёд, важно понять: в чём твоя сила и как тебе проще учиться.</p>
+            
+            <div class="quote">«Умение учиться — суперсила XXI века»</div>
+            
+            <p class="lead">Определим твой тип мышления? Это займёт пару минут, а поможет выбрать именно то, что тебе подойдёт: по формату, по темам и по жизни 😉</p>
+            
+            <button class="btn" onclick="startQuiz()">Узнать, как работает мой мозг</button>
+            
+            <div class="counter">В среднем тест проходит за 1 мин. 37 сек</div>
+        </div>
+        
+        <!-- Прогресс бар -->
+        <div class="progress-bar" id="progress-bar" style="display: none;">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <!-- Возрастная группа -->
+        <div class="question" id="age-question">
+            <div class="question-title">Сколько тебе лет?</div>
+            <label class="option"><input type="radio" name="age" value="1"> До 11</label>
+            <label class="option"><input type="radio" name="age" value="2"> 12–17</label>
+            <label class="option"><input type="radio" name="age" value="3"> 18–22</label>
+            <label class="option"><input type="radio" name="age" value="4"> 23–30</label>
+            <label class="option"><input type="radio" name="age" value="5"> 31 и старше</label>
+            
+            <button class="btn" onclick="nextQuestion('age-question', 'q1')">Далее</button>
+        </div>
+        
+        <!-- Основные вопросы -->
+        <div class="question" id="q1">
+            <div class="question-title">1. Что тебе больше нравится делать?</div>
+            <label class="option"><input type="radio" name="q1" value="💡"> <span class="emoji">💡</span> Раскладывать по полочкам и анализировать <small>Ты любишь порядок и логику — тебе важно понять, как всё устроено.</small></label>
+            <label class="option"><input type="radio" name="q1" value="🎨"> <span class="emoji">🎨</span> Придумывать что-то нестандартное <small>Ты как генератор идей. Всегда найдёшь свой путь, даже если его ещё не существует.</small></label>
+            <label class="option"><input type="radio" name="q1" value="💬"> <span class="emoji">💬</span> Общаться, вдохновлять других <small>Ты заряжаешь людей. С тобой всегда хочется что-то делать вместе.</small></label>
+            <label class="option"><input type="radio" name="q1" value="⚡"> <span class="emoji">⚡</span> Просто брать и делать <small>Ты — не теоретик. Ты — движ. Пока другие думают, ты уже пробуешь.</small></label>
+            
+            <div style="display: flex; justify-content: space-between;">
+                <button class="btn btn-secondary" onclick="prevQuestion('q1', 'age-question')">Назад</button>
+                <button class="btn" onclick="nextQuestion('q1', 'q2')">Далее</button>
+            </div>
+        </div>
+        
+        <div class="question" id="q2">
+            <div class="question-title">2. Как ты решаешь задачи?</div>
+            <label class="option"><input type="radio" name="q2" value="💡"> <span class="emoji">💡</span> Ищу закономерности и считаю всё наперёд <small>Ты как стратег — планируешь на 3 шага вперёд. Даже в быту.</small></label>
+            <label class="option"><input type="radio" name="q2" value="🎨"> <span class="emoji">🎨</span> Думаю нестандартно, ищу необычные пути <small>Ты не боишься ломать шаблоны. Для тебя нет "одного правильного варианта".</small></label>
+            <label class="option"><input type="radio" name="q2" value="💬"> <span class="emoji">💬</span> Советуюсь, обсуждаю, беру мнения <small>Ты умеешь слышать. Твоя сила — в диалоге и команде.</small></label>
+            <label class="option"><input type="radio" name="q2" value="⚡"> <span class="emoji">⚡</span> Начинаю действовать и учусь по ходу <small>Твой девиз — «Сначала сделаю, потом разберусь». Ты ловишь опыт в процессе.</small></label>
+            
+            <div style="display: flex; justify-content: space-between;">
+                <button class="btn btn-secondary" onclick="prevQuestion('q2', 'q1')">Назад</button>
+                <button class="btn" onclick="nextQuestion('q2', 'q3')">Далее</button>
+            </div>
+        </div>
+        
+        <div class="question" id="q3">
+            <div class="question-title">3. Какой комплимент тебе ближе?</div>
+            <label class="option"><input type="radio" name="q3" value="💡"> <span class="emoji">💡</span> «Ты всё точно рассчитал(а)» <small>Ты ценишь точность и ясность — тебе важно, чтобы всё было по уму.</small></label>
+            <label class="option"><input type="radio" name="q3" value="🎨"> <span class="emoji">🎨</span> «Ты это придумал(а)? Гениально!» <small>Твоя гордость — быть оригинальным(ой). Твори — и пусть мир удивляется.</small></label>
+            <label class="option"><input type="radio" name="q3" value="💬"> <span class="emoji">💬</span> «С тобой приятно работать!» <small>Ты — душа команды. С тобой и общаться легко, и проект запускать приятно.</small></label>
+            <label class="option"><input type="radio" name="q3" value="⚡"> <span class="emoji">⚡</span> «Ты ведёшь за собой!» <small>Ты как мотор — вокруг тебя люди начинают двигаться и пробовать.</small></label>
+            
+            <div style="display: flex; justify-content: space-between;">
+                <button class="btn btn-secondary" onclick="prevQuestion('q3', 'q2')">Назад</button>
+                <button class="btn" onclick="nextQuestion('q3', 'q4')">Далее</button>
+            </div>
+        </div>
+        
+        <div class="question" id="q4">
+            <div class="question-title">4. Как ты предпочитаешь учиться?</div>
+            <label class="option"><input type="radio" name="q4" value="💡"> <span class="emoji">💡</span> Регулярно и с логикой <small>Ты системный. Любишь, когда всё по полочкам — шаг за шагом.</small></label>
+            <label class="option"><input type="radio" name="q4" value="🎨"> <span class="emoji">🎨</span> Через визуалы, мемы и примеры <small>Ты учишься через образы и эмоции. Скучно — не работает.</small></label>
+            <label class="option"><input type="radio" name="q4" value="💬"> <span class="emoji">💬</span> В группе, с обсуждениями <small>Ты раскрываешься в диалоге. Учиться — значит делиться.</small></label>
+            <label class="option"><input type="radio" name="q4" value="⚡"> <span class="emoji">⚡</span> Через практику — сделал, понял <small>Теория — не твоё. Ты сразу пробуешь, ошибаешься, находишь решение.</small></label>
+            
+            <div style="display: flex; justify-content: space-between;">
+                <button class="btn btn-secondary" onclick="prevQuestion('q4', 'q3')">Назад</button>
+                <button class="btn" onclick="showResult()">Узнать результат</button>
+            </div>
+        </div>
+        
+        <!-- Результаты -->
+        <div class="result-section" id="result">
+            <div class="result-title">✨ А теперь — считай эмодзи!</div>
+            <p>Посмотри, каких эмодзи ты выбрал(а) больше всего. Это и есть твой тип мышления:</p>
+            
+            <!-- Изображение для результатов -->
+            <img src="[ЗАМЕНИТЬ_НА_ССЫЛКУ_ИЗОБРАЖЕНИЯ]" alt="Результат теста" class="result-image">
+            
+            <div id="analyst-result" style="display: none;">
+                <div class="question-title"><span class="emoji">💡</span> Аналитик</div>
+                <p>Ты любишь разбираться в сути, логично мыслить, всё раскладывать по полочкам. Тебе подойдут темы про критическое мышление, цифровую грамотность и финансы. Ты видишь картину целиком и умеешь думать на шаг вперёд.</p>
+            </div>
+            
+            <div id="creator-result" style="display: none;">
+                <div class="question-title"><span class="emoji">🎨</span> Креатор</div>
+                <p>Ты обожаешь творить, удивлять, нестандартно мыслить. Тебе зайдут креативность, самопрезентация, дизайн-мышление. Ты как генератор идей — можешь зажечь проект, команду и даже Вселенную.</p>
+            </div>
+            
+            <div id="communicator-result" style="display: none;">
+                <div class="question-title"><span class="emoji">💬</span> Коммуникатор</div>
+                <p>Твоя сила — в контакте с людьми. Ты умеешь слушать, доносить и вдохновлять. Твои темы: лидерство, soft skills, уверенность. Ты заряжаешь энергией и умеешь говорить так, чтобы тебя услышали.</p>
+            </div>
+            
+            <div id="driver-result" style="display: none;">
+                <div class="question-title"><span class="emoji">⚡</span> Двигатель</div>
+                <p>Ты — человек действия. Не размышляешь слишком долго — делаешь. Тебе подойдут предпринимательство, управление проектами, привычки. Ты не боишься пробовать и учишься на практике.</p>
+            </div>
+            
+            <div class="quote">🧠 Твой тип — это не ярлык, а подсказка. Он подскажет, как тебе будет проще учиться и что развивать. 💡 И да — ты можешь быть не только одним типом. Все стили могут развиваться вместе.</div>
+            
+            <div class="quote">🔑 «Не важно, сколько ты знаешь — важно, умеешь ли учиться»</div>
+            
+            <button class="btn" onclick="showNextSteps()">🔍 А как это мне поможет?</button>
+        </div>
+        
+        <!-- Дальнейшие шаги (для подростков) -->
+        <div class="result-section" id="next-steps">
+            <div class="result-title">Ты раскрыл(а) часть своей суперсилы 🧬</div>
+            <p>Теперь пора использовать её на полную — прокачать себя в темах, которые помогут достигать целей, управлять временем и стать увереннее.</p>
+            <p>🔥Микроуроки, максимум пользы — в Telegram 🚀</p>
+            <p>🎁 И да — старт бесплатно. Просто ответь на 3 вопроса и забирай свой набор 💥</p>
+            
+            <div class="quote">💡 «Учёба — это не зубрёжка. Это умение прокачивать себя»</div>
+            
+            <!-- Изображение для подростков -->
+            <img src="[ЗАМЕНИТЬ_НА_ССЫЛКУ_ИЗОБРАЖЕНИЯ]" alt="Прокачай себя" class="result-image">
+            
+            <!-- Дополнительные вопросы для подростков -->
+            <div class="question">
+                <div class="question-title">🎯 Вопрос 1: «Чего тебе больше всего не хватает сейчас?»</div>
+                <p>Можно выбрать несколько вариантов</p>
+                <label class="option"><input type="checkbox"> Контроля над временем ⏰</label>
+                <label class="option"><input type="checkbox"> Мотивации действовать 💥</label>
+                <label class="option"><input type="checkbox"> Чёткой цели 🎯</label>
+                <label class="option"><input type="checkbox"> Всё кажется важным, но ничего не делаю 🤯</label>
+                <label class="option"><input type="checkbox"> Хочу разобраться с собой 🙃</label>
+            </div>
+            
+            <div class="question">
+                <div class="question-title">😵 Вопрос 2: «Что чаще всего мешает тебе учиться или делать то, что задумал(а)?»</div>
+                <p>Можно выбрать несколько вариантов</p>
+                <label class="option"><input type="checkbox"> Прокрастинация и отвлекашки 📱</label>
+                <label class="option"><input type="checkbox"> Постоянно устаю 😩</label>
+                <label class="option"><input type="checkbox"> Боюсь облажаться или не дойти до конца 😬</label>
+                <label class="option"><input type="checkbox"> Не знаю, с чего начать 🤷</label>
+                <label class="option"><input type="checkbox"> Не вижу смысла 🤔</label>
+            </div>
+            
+            <div class="question">
+                <div class="question-title">💬 Вопрос 3. Какие темы тебе интересны?</div>
+                <p>Можно выбрать несколько вариантов</p>
+                <label class="option"><input type="checkbox"> Финансовая грамотность и предпринимательство— как управлять деньгами и строить будущее</label>
+                <label class="option"><input type="checkbox"> Привычки — как изменить свою жизнь к лучшему с помощью правильных привычек</label>
+                <label class="option"><input type="checkbox"> Цели и планирование — как ставить цели и достигать их</label>
+                <label class="option"><input type="checkbox"> Уверенность и лидерство — как быть уверенным в себе и справляться с трудностями</label>
+                <label class="option"><input type="checkbox"> Коммуникации — как легко общаться с людьми и строить отношения</label>
+                <label class="option"><input type="checkbox"> Креативность — как развить творческое мышление и идеи</label>
+            </div>
+            
+            <div class="quote">🧠 «Учёба — это не про зубрёжку. Это про осознанность, выбор и будущее»</div>
+            
+            <p>📲 Что тебя ждёт в боте?</p>
+            <ul>
+                <li>✅ SMART-цели — научишься ставить цели, которые реально хочется достигать</li>
+                <li>✅ Тайм-менеджмент — забудь про "ничего не успеваю"</li>
+                <li>Будут мини-квизы и даже рекомендации от ИИ по твоим ответам 👾</li>
+            </ul>
+            
+            <button class="btn">🔥 Залететь в бота</button>
+            
+            <!-- Финальное изображение -->
+            <img src="[ЗАМЕНИТЬ_НА_ССЫЛКУ_ИЗОБРАЖЕНИЯ]" alt="Ракета роста" class="result-image">
+        </div>
+    </div>
+
+    <script>
+        // Объект для хранения ответов
+        const answers = {
+            age: null,
+            q1: null,
+            q2: null,
+            q3: null,
+            q4: null
+        };
+        
+        // Начать квиз
+        function startQuiz() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('progress-bar').style.display = 'block';
+            document.getElementById('age-question').classList.add('active');
+            updateProgress(0);
+        }
+        
+        // Переход к следующему вопросу
+        function nextQuestion(currentId, nextId) {
+            // Проверяем, выбран ли ответ
+            const selectedOption = document.querySelector(`#${currentId} input[type="radio"]:checked`);
+            if (!selectedOption) {
+                alert('Пожалуйста, выберите вариант ответа');
+                return;
+            }
+            
+            // Сохраняем ответ
+            answers[currentId] = selectedOption.value;
+            
+            // Переходим к следующему вопросу
+            document.getElementById(currentId).classList.remove('active');
+            document.getElementById(nextId).classList.add('active');
+            
+            // Обновляем прогресс бар
+            const currentStep = parseInt(currentId.replace('q', '')) || 0;
+            updateProgress(currentStep);
+        }
+        
+        // Вернуться к предыдущему вопросу
+        function prevQuestion(currentId, prevId) {
+            document.getElementById(currentId).classList.remove('active');
+            document.getElementById(prevId).classList.add('active');
+            
+            // Обновляем прогресс бар
+            const currentStep = parseInt(prevId.replace('q', '')) || 0;
+            updateProgress(currentStep - 1);
+        }
+        
+        // Показать результаты
+        function showResult() {
+            // Проверяем, выбран ли ответ
+            const selectedOption = document.querySelector('#q4 input[type="radio"]:checked');
+            if (!selectedOption) {
+                alert('Пожалуйста, выберите вариант ответа');
+                return;
+            }
+            
+            // Сохраняем последний ответ
+            answers['q4'] = selectedOption.value;
+            
+            // Скрываем текущий вопрос
+            document.getElementById('q4').classList.remove('active');
+            
+            // Подсчитываем результаты
+            const emojiCounts = {
+                '💡': 0,
+                '🎨': 0,
+                '💬': 0,
+                '⚡': 0
+            };
+            
+            // Считаем эмодзи
+            for (let key in answers) {
+                if (answers[key] && emojiCounts.hasOwnProperty(answers[key])) {
+                    emojiCounts[answers[key]]++;
+                }
+            }
+            
+            // Определяем доминирующий тип
+            let maxCount = 0;
+            let dominantType = '';
+            
+            for (let emoji in emojiCounts) {
+                if (emojiCounts[emoji] > maxCount) {
+                    maxCount = emojiCounts[emoji];
+                    dominantType = emoji;
+                }
+            }
+            
+            // Показываем соответствующий результат
+            switch(dominantType) {
+                case '💡':
+                    document.getElementById('analyst-result').style.display = 'block';
+                    break;
+                case '🎨':
+                    document.getElementById('creator-result').style.display = 'block';
+                    break;
+                case '💬':
+                    document.getElementById('communicator-result').style.display = 'block';
+                    break;
+                case '⚡':
+                    document.getElementById('driver-result').style.display = 'block';
+                    break;
+            }
+            
+            // Показываем блок с результатами
+            document.getElementById('result').style.display = 'block';
+            updateProgress(4);
+        }
+        
+        // Показать следующий шаг
+        function showNextSteps() {
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('next-steps').style.display = 'block';
+        }
+        
+        // Обновить прогресс бар
+        function updateProgress(step) {
+            const totalSteps = 4; // Всего вопросов
+            const progressPercent = (step / totalSteps) * 100;
+            document.getElementById('progress').style.width = `${progressPercent}%`;
+        }
+    </script>
+</body>
+</html>
